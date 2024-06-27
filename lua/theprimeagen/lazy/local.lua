@@ -38,5 +38,7 @@ local local_plugins = {
     },
 }
 
-return local_plugins
+-- DISABLED for now 
+-- return local_plugins
+return {}
 

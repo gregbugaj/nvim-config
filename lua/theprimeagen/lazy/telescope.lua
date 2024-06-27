@@ -25,6 +25,16 @@ return {
             builtin.grep_string({ search = vim.fn.input("Grep > ") })
         end)
         vim.keymap.set('n', '<leader>vh', builtin.help_tags, {})
+
+
+
+        -- Existing Telescope setup and key bindings
+
+        vim.keymap.set('n', '<leader>bn', ':bnext<CR>', {silent = true, noremap = true})
+        vim.keymap.set('n', '<leader>bp', ':bprevious<CR>', {silent = true, noremap = true})
+        vim.keymap.set('n', '<leader>bd', ':bdelete<CR>', {silent = true, noremap = true})
+        vim.keymap.set('n', '<leader>bl', ':Telescope buffers<CR>', {silent = true, noremap = true})
+        
     end
 }
 
