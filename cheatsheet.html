@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neovim Keymap Cheatsheet</title>
+    <style>
+        :root {
+            --bg: #1a1b26;
+            --bg-dark: #16161e;
+            --bg-highlight: #292e42;
+            --fg: #c0caf5;
+            --fg-dark: #a9b1d6;
+            --comment: #565f89;
+            --cyan: #7dcfff;
+            --blue: #7aa2f7;
+            --purple: #bb9af7;
+            --green: #9ece6a;
+            --orange: #ff9e64;
+            --red: #f7768e;
+            --yellow: #e0af68;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'JetBrains Mono', 'Fira Code', 'SF Mono', Consolas, monospace;
+            background: var(--bg);
+            color: var(--fg);
+            font-size: 13px;
+            line-height: 1.5;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--blue);
+            margin-bottom: 5px;
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: var(--comment);
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section {
+            background: var(--bg-dark);
+            border-radius: 8px;
+            padding: 12px;
+            border: 1px solid var(--bg-highlight);
+        }
+
+        .section h2 {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            padding-bottom: 6px;
+            border-bottom: 1px solid var(--bg-highlight);
+        }
+
+        .section.general h2 { color: var(--cyan); }
+        .section.files h2 { color: var(--blue); }
+        .section.search h2 { color: var(--purple); }
+        .section.git h2 { color: var(--orange); }
+        .section.lsp h2 { color: var(--green); }
+        .section.diagnostics h2 { color: var(--red); }
+        .section.claude h2 { color: var(--purple); }
+        .section.toggles h2 { color: var(--yellow); }
+        .section.other h2 { color: var(--cyan); }
+
+        .keymap {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 4px 0;
+            border-bottom: 1px solid var(--bg-highlight);
+        }
+
+        .keymap:last-child {
+            border-bottom: none;
+        }
+
+        kbd {
+            background: var(--bg-highlight);
+            color: var(--cyan);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: inherit;
+            font-size: 12px;
+            white-space: nowrap;
+            border: 1px solid #3b4261;
+        }
+
+        .action {
+            color: var(--fg-dark);
+            font-size: 12px;
+            text-align: right;
+            flex: 1;
+            margin-left: 10px;
+        }
+
+        .subsection {
+            margin-top: 10px;
+            padding-top: 8px;
+            border-top: 1px dashed var(--bg-highlight);
+        }
+
+        .subsection-title {
+            color: var(--comment);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
+        }
+
+        .mode {
+            font-size: 10px;
+            color: var(--comment);
+            margin-left: 4px;
+        }
+
+        @media print {
+            body {
+                background: white;
+                color: #1a1b26;
+                font-size: 11px;
+                padding: 10px;
+            }
+
+            .container {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 10px;
+            }
+
+            .section {
+                background: #f5f5f5;
+                border: 1px solid #ddd;
+                padding: 8px;
+                break-inside: avoid;
+            }
+
+            kbd {
+                background: #e0e0e0;
+                color: #1a1b26;
+                border: 1px solid #ccc;
+            }
+
+            .action {
+                color: #333;
+            }
+
+            h1 { color: #1a1b26; }
+            .subtitle { color: #666; }
+            .section h2 { color: #333 !important; }
+            .subsection-title { color: #666; }
+            .mode { color: #888; }
+        }
+
+        @media (max-width: 1200px) {
+            .container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 800px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Neovim Keymap Cheatsheet</h1>
+    <p class="subtitle">Leader key: <kbd>Space</kbd></p>
+
+    <div class="container">
+        <div class="section general">
+            <h2>General</h2>
+            <div class="keymap"><kbd>&lt;leader&gt;cf</kbd><span class="action">Format buffer</span></div>
+            <div class="keymap"><kbd>Ctrl+k</kbd><span class="action">Next quickfix</span></div>
+            <div class="keymap"><kbd>Ctrl+j</kbd><span class="action">Prev quickfix</span></div>
+            <div class="keymap"><kbd>&lt;leader&gt;k</kbd><span class="action">Next location list</span></div>
+            <div class="keymap"><kbd>&lt;leader&gt;j</kbd><span class="action">Prev location list</span></div>
+        </div>
+
+        <div class="section files">
+            <h2>Files & Buffers</h2>
+            <div class="keymap"><kbd>&lt;leader&gt;&lt;space&gt;</kbd><span class="action">Smart Find</span></div>
+            <div class="keymap"><kbd>&lt;leader&gt;,</kbd><span class="action">Buffers</span></div>
+            <div class="keymap"><kbd>&lt;leader&gt;e</kbd><span class="action">Explorer</span></div>
+            <div class="keymap"><kbd>&lt;leader&gt;ff</kbd><span class="action">Find Files</span></div>
+            <div class="keymap"><kbd>&lt;leader&gt;fg</kbd><span class="action">Find Git Files</span></div>
+            <div class="keymap"><kbd>&lt;leader&gt;fc</kbd><span class="action">Find Config</span></div>
+            <div class="keymap"><kbd>&lt;leader&gt;fr</kbd><span class="action">Recent Files</span></div>
+            <div class="keymap"><kbd>&lt;leader&gt;fp</kbd><span class="action">Projects</span></div>
+            <div class="keymap"><kbd>&lt;leader&gt;bd</kbd><span class="action">Delete Buffer</span></div>
+            <div class="keymap"><kbd>&lt;leader&gt;cR</kbd><span class="action">Rename File</span></div>
+            <div class="keymap"><kbd>&lt;leader&gt;.</kbd><span class="action">Scratch Buffer</span></div>
+            <div class="keymap"><kbd>&lt;leader&gt;S</kbd><span class="action">Select Scratch</span></div>
+        </div>
+
+        <div class="section search">
+            <h2>Search</h2>
+            <div class="keymap"><kbd>&lt;leader&gt;/</kbd><span class="action">Grep</span></div>
+            <div class="keymap"><kbd>&lt;leader&gt;sg</kbd><span class="action">Grep</span></div>
+            <div class="keymap"><kbd>&lt;leader&gt;sb</kbd><span class="action">Buffer Lines</span></div>
+            <div class="keymap"><kbd>&lt;leader&gt;sB</kbd><span class="action">Grep Buffers</span></div>
+            <div class="keymap"><kbd>&lt;leader&gt;sw</kbd><span class="action">Grep Word<span class="mode">(n/v)</span></span></div>
+            <div class="keymap"><kbd>&lt;leader&gt;s"</kbd><span class="action">Registers</span></div>
+            <div class="keymap"><kbd>&lt;leader&gt;s/</kbd><span class="action">Search History</span></div>
+            <div class="keymap"><kbd>&lt;leader&gt;:</kbd><span class="action">Command History</span></div>
+            <div class="keymap"><kbd>&lt;leader&gt;sC</kbd><span class="action">Commands</span></div>
+            <div class="keymap"><kbd>&lt;leader&gt;sh</kbd><span class="action">Help</span></div>
+            <div class="keymap"><kbd>&lt;leader&gt;sk</kbd><span class="action">Keymaps</span></div>
+            <div class="keymap"><kbd>&lt;leader&gt;sm</kbd><span class="action">Marks</span></div>
+            <div class="keymap"><kbd>&lt;leader&gt;sj</kbd><span class="action">Jumps</span></div>
+            <div class="keymap"><kbd>&lt;leader&gt;sq</kbd><span class="action">Quickfix List</span></div>
+            <div class="keymap"><kbd>&lt;leader&gt;sl</kbd><span class="action">Location List</span></div>
+            <div class="keymap"><kbd>&lt;leader&gt;su</kbd><span class="action">Undo History</span></div>
+            <div class="keymap"><kbd>&lt;leader&gt;sR</kbd><span class="action">Resume</span></div>
+        </div>
+
+        <div class="section git">
+            <h2>Git</h2>
+            <div class="keymap"><kbd>&lt;leader&gt;gg</kbd><span class="action">Lazygit</span></div>
+            <div class="keymap"><kbd>&lt;leader&gt;gs</kbd><span class="action">Status</span></div>
+            <div class="keymap"><kbd>&lt;leader&gt;gb</kbd><span class="action">Branches</span></div>
+            <div class="keymap"><kbd>&lt;leader&gt;gl</kbd><span class="action">Log</span></div>
+            <div class="keymap"><kbd>&lt;leader&gt;gL</kbd><span class="action">Log Line</span></div>
+            <div class="keymap"><kbd>&lt;leader&gt;gf</kbd><span class="action">Log File</span></div>
+            <div class="keymap"><kbd>&lt;leader&gt;gd</kbd><span class="action">Diff Hunks</span></div>
+            <div class="keymap"><kbd>&lt;leader&gt;gS</kbd><span class="action">Stash</span></div>
+            <div class="keymap"><kbd>&lt;leader&gt;gB</kbd><span class="action">Browse<span class="mode">(n/v)</span></span></div>
+            <div class="subsection">
+                <div class="subsection-title">GitHub</div>
+                <div class="keymap"><kbd>&lt;leader&gt;gi</kbd><span class="action">Issues (open)</span></div>
+                <div class="keymap"><kbd>&lt;leader&gt;gI</kbd><span class="action">Issues (all)</span></div>
+                <div class="keymap"><kbd>&lt;leader&gt;gp</kbd><span class="action">PRs (open)</span></div>
+                <div class="keymap"><kbd>&lt;leader&gt;gP</kbd><span class="action">PRs (all)</span></div>
+            </div>
+        </div>
+
+        <div class="section lsp">
+            <h2>LSP</h2>
+            <div class="keymap"><kbd>gd</kbd><span class="action">Definition</span></div>
+            <div class="keymap"><kbd>gD</kbd><span class="action">Declaration</span></div>
+            <div class="keymap"><kbd>gr</kbd><span class="action">References</span></div>
+            <div class="keymap"><kbd>gI</kbd><span class="action">Implementation</span></div>
+            <div class="keymap"><kbd>gy</kbd><span class="action">Type Definition</span></div>
+            <div class="keymap"><kbd>gai</kbd><span class="action">Incoming Calls</span></div>
+            <div class="keymap"><kbd>gao</kbd><span class="action">Outgoing Calls</span></div>
+            <div class="keymap"><kbd>&lt;leader&gt;ss</kbd><span class="action">Symbols</span></div>
+            <div class="keymap"><kbd>&lt;leader&gt;sS</kbd><span class="action">Workspace Symbols</span></div>
+            <div class="keymap"><kbd>]]</kbd><span class="action">Next Reference</span></div>
+            <div class="keymap"><kbd>[[</kbd><span class="action">Prev Reference</span></div>
+            <div class="subsection">
+                <div class="subsection-title">Completion (Insert)</div>
+                <div class="keymap"><kbd>Ctrl+n</kbd><span class="action">Next Item</span></div>
+                <div class="keymap"><kbd>Ctrl+p</kbd><span class="action">Prev Item</span></div>
+                <div class="keymap"><kbd>Ctrl+y</kbd><span class="action">Confirm</span></div>
+                <div class="keymap"><kbd>Ctrl+Space</kbd><span class="action">Trigger</span></div>
+            </div>
+        </div>
+
+        <div class="section diagnostics">
+            <h2>Diagnostics</h2>
+            <div class="keymap"><kbd>&lt;leader&gt;tt</kbd><span class="action">Toggle Trouble</span></div>
+            <div class="keymap"><kbd>]t</kbd><span class="action">Next diagnostic</span></div>
+            <div class="keymap"><kbd>[t</kbd><span class="action">Prev diagnostic</span></div>
+            <div class="keymap"><kbd>&lt;leader&gt;sd</kbd><span class="action">Diagnostics (all)</span></div>
+            <div class="keymap"><kbd>&lt;leader&gt;sD</kbd><span class="action">Buffer Diagnostics</span></div>
+        </div>
+
+        <div class="section claude">
+            <h2>Claude Code</h2>
+            <div class="keymap"><kbd>&lt;leader&gt;ac</kbd><span class="action">Toggle Claude</span></div>
+            <div class="keymap"><kbd>&lt;leader&gt;af</kbd><span class="action">Focus Claude</span></div>
+            <div class="keymap"><kbd>&lt;leader&gt;ar</kbd><span class="action">Resume</span></div>
+            <div class="keymap"><kbd>&lt;leader&gt;aC</kbd><span class="action">Continue</span></div>
+            <div class="keymap"><kbd>&lt;leader&gt;am</kbd><span class="action">Select Model</span></div>
+            <div class="keymap"><kbd>&lt;leader&gt;ab</kbd><span class="action">Add Buffer</span></div>
+            <div class="keymap"><kbd>&lt;leader&gt;as</kbd><span class="action">Send Selection<span class="mode">(v)</span></span></div>
+            <div class="keymap"><kbd>&lt;leader&gt;aa</kbd><span class="action">Accept Diff</span></div>
+            <div class="keymap"><kbd>&lt;leader&gt;ad</kbd><span class="action">Reject Diff</span></div>
+        </div>
+
+        <div class="section toggles">
+            <h2>Toggles</h2>
+            <div class="keymap"><kbd>&lt;leader&gt;us</kbd><span class="action">Spelling</span></div>
+            <div class="keymap"><kbd>&lt;leader&gt;uw</kbd><span class="action">Wrap</span></div>
+            <div class="keymap"><kbd>&lt;leader&gt;ul</kbd><span class="action">Line Numbers</span></div>
+            <div class="keymap"><kbd>&lt;leader&gt;uL</kbd><span class="action">Relative Numbers</span></div>
+            <div class="keymap"><kbd>&lt;leader&gt;ud</kbd><span class="action">Diagnostics</span></div>
+            <div class="keymap"><kbd>&lt;leader&gt;uh</kbd><span class="action">Inlay Hints</span></div>
+            <div class="keymap"><kbd>&lt;leader&gt;ug</kbd><span class="action">Indent Guides</span></div>
+            <div class="keymap"><kbd>&lt;leader&gt;uT</kbd><span class="action">Treesitter</span></div>
+            <div class="keymap"><kbd>&lt;leader&gt;ub</kbd><span class="action">Dark Background</span></div>
+            <div class="keymap"><kbd>&lt;leader&gt;uc</kbd><span class="action">Conceal</span></div>
+            <div class="keymap"><kbd>&lt;leader&gt;uD</kbd><span class="action">Dim</span></div>
+            <div class="keymap"><kbd>&lt;leader&gt;uC</kbd><span class="action">Colorschemes</span></div>
+            <div class="keymap"><kbd>&lt;leader&gt;un</kbd><span class="action">Dismiss Notifications</span></div>
+        </div>
+
+        <div class="section other">
+            <h2>Other</h2>
+            <div class="keymap"><kbd>Ctrl+/</kbd><span class="action">Terminal</span></div>
+            <div class="keymap"><kbd>&lt;leader&gt;z</kbd><span class="action">Zen Mode</span></div>
+            <div class="keymap"><kbd>&lt;leader&gt;Z</kbd><span class="action">Zoom</span></div>
+            <div class="keymap"><kbd>&lt;leader&gt;n</kbd><span class="action">Notifications</span></div>
+            <div class="keymap"><kbd>&lt;leader&gt;N</kbd><span class="action">Neovim News</span></div>
+        </div>
+    </div>
+</body>
+</html>

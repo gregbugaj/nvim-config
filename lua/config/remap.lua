@@ -2,14 +2,8 @@ vim.g.mapleader = " "
 
 local opts = { noremap = true, silent = true }
 
--- nvim-tree
-vim.keymap.set('n', '<Leader>e', ':NvimTreeToggle<CR>', opts)
-vim.keymap.set('n', '<Leader>f', ':NvimTreeFindFile<CR>', opts)
-vim.keymap.set('n', '<Leader>r', ':NvimTreeRefresh<CR>', opts)
-vim.keymap.set('n', '<Leader>n', ':NvimTreeFocus<CR>', opts)
-
 -- formatting
-vim.keymap.set("n", "<leader>f", vim.lsp.buf.format)
+vim.keymap.set("n", "<leader>cf", vim.lsp.buf.format, { desc = "Format buffer" })
 
 -- quickfix navigation
 vim.keymap.set("n", "<C-k>", "<cmd>cnext<CR>zz")
