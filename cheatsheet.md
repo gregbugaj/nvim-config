@@ -161,6 +161,21 @@
 
 ---
 
+## Tmux/Nvim Navigation
+
+| Key | Action |
+|-----|--------|
+| `<C-h>` | Move left (pane/split) |
+| `<C-j>` | Move down (pane/split) |
+| `<C-k>` | Move up (pane/split) |
+| `<C-l>` | Move right (pane/split) |
+| `<M-h>` | Resize left |
+| `<M-j>` | Resize down |
+| `<M-k>` | Resize up |
+| `<M-l>` | Resize right |
+
+---
+
 ## Other
 
 | Key | Action |
